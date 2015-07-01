@@ -1,0 +1,56 @@
+import urllib.request
+import time
+import tweepy
+
+quotation = 99.99
+
+#Funções para obtenção dos preços
+def commmit_buy():
+    price = get_price()   
+    quotation = float(price) 
+    print("Compre agora! Preço: $ ",quotation)
+
+def get_price():
+    page = urllib.request.urlopen("http://beans-r-us.appspot.com/prices-loyalty.html")
+    text = page.read().decode("utf8")
+    locate = text.find(">$") 
+    start_find = locate + 2 
+    end_find = start_find + 4
+    return(text[start_find:end_find])
+
+
+#Função de envio para o twitter
+def send_to_twitter(msg):
+    CONSUMER_KEY = ''
+    CONSUMER_SECRET = ''
+    ACCESS_TOKEN = ''
+    ACCESS_TOKEN_SECRET = ''
+    auth = tweepy.OAuthHandler(CONSUMER_KEY,CONSUMER_SECRET)
+    auth.set_access_token(ACCESS_TOKEN,ACCESS_TOKEN_SECRET)
+    api = tweepy.API(auth)
+    api.update_status(status=msg)
+    
+
+    
+#Main programm
+gera_emerg = input("Você deseja solicitar o pedido de emergência? Digite Y ou N: ")
+
+if gera_emerg == "Y":
+    price = get_price()
+    quotation = float(price) 
+    print("Pedido de emergência autorizado! Preço: $",quotation)
+    msg = "Pedido de emergência autorizado! Preço: $ " + str(quotation)
+    send_to_twitter(msg)
+    print("")
+    print("Pedido de emergência enviado com sucesso para o Twitter do StarBuzz CEO")
+
+else:
+    price = get_price()
+    quotation = float(price) 
+    if quotation < 4.74:
+        print("Fazendo a cotação...")
+        print("")
+        msg = "Cotação do dia! Preço: $ " + str(quotation)
+        send_to_twitter(msg)
+        time.sleep(8)
+        commmit_buy()
