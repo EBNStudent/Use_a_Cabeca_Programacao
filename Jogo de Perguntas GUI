@@ -1,0 +1,68 @@
+from tkinter import *
+import pygame.mixer
+
+
+def press_correct_sound():
+    num_good.set(num_good.get() + 1)
+    correct_s.play()
+
+
+def press_wrong_sound():
+    num_bad.set(num_bad.get() + 1)
+    wrong_s.play()
+
+def press_exit():
+    app.destroy()
+
+sounds = pygame.mixer
+sounds.init()
+
+correct_s = sounds.Sound("correct.wav")
+wrong_s = sounds.Sound("wrong.wav")
+
+#Declaração da janela 
+app = Tk()
+num_good = IntVar()
+num_good.set(0)
+num_bad = IntVar()
+num_bad.set(0)
+
+app.title("Game Show GUI")
+app.geometry('400x200+200+100')
+
+label1 = Label(app,text = "When you are ready, click on the buttons!", heigh = 10)
+label1.pack()
+
+label2 = Label(app, textvariable = num_good)
+label2.pack(side = "left")
+
+label3 = Label(app, textvariable = num_bad)
+label3.pack(side = "right")
+
+btn1 = Button(app, text = "Correct!", width = 10, command = press_correct_sound)
+btn1.pack(side = "left", padx = 10, pady = 10)
+
+btn2 = Button(app, text = "Wrong!", width = 10, command = press_wrong_sound)
+btn2.pack(side = "right", padx = 10, pady = 10)
+
+btn3 = Button(app, text = "Click Exit", width = 10, command = press_exit)
+btn3.pack(side = "bottom", padx = 10, pady = 10)
+
+app.mainloop()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
